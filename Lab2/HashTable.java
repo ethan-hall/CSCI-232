@@ -52,8 +52,23 @@ class Tree { // tree class
         }
     }
 
-    // in-order tree traversal, returns linkedlist of ordered values
-    public LinkedList inOrder() {
+    // inOrder BST search function, used for insertion and search
+    // returns searchValue if found, -1 if not found
+      public int search(int searchValue) {
+        Node localRoot = root;
+        while (localRoot != null) {
+            if (localRoot.data == searchValue)
+                return searchValue;
+            if (localRoot.data > searchValue) { // search left
+                localRoot = localRoot.leftChild;
+            } else
+                localRoot = localRoot.rightChild;
+        }
+        return -1;
+    }
+
+    // in-order tree traversal, returns linkedlist of ordered values, used to display()
+    public LinkedList inOrder() { // used to display tree
         inOrderList.clear(); // clear list
         inOrderRec(root); // start recursive call
         return inOrderList; // return tree contents
@@ -87,14 +102,13 @@ public class HashTable {
         else
             System.out.println("'"+value+"'" + " has already been inserted at index " + hashValue + ".");
     }
-
-    // return hash index of value, if value is not found return -1
-    public int search(int value) { // search for value
+    // return hash index of value if found, if value is not found return -1
+    public int search(int value) {
         int hashValue = value % hashTable.length; // preform hash function
-        if (hashTable[hashValue].inOrder().contains(value))
-            return hashValue; // value found, return hash index
+        if (hashTable[hashValue].search(value) != -1) // search tree at index hashValue
+            return hashValue;
         else
-            return -1; // value not found
+            return -1;
     }
 
     public void display() { // print hash table
